@@ -7,7 +7,18 @@
     <color name="green">#00ff00</color>
     <color name="blue">#0000ff</color>
     <color name="gray">#cccccc</color>
+    <color name="light_blue">#4285f4</color>
     
+    <color name="app_common_textColor">#BDBDBD</color>
     
+    <color name="app_common_actionbar_backgroundColor">#0ecb5c</color>
+	
+	<color name="note_add_bottom_textColor">#BDBDBD</color>
+    <color name="note_add_bottom_tools_navigation_tipColor">#148af7</color>
+    
+    <color name="note_add_bottom_tools_navigation_norTextColor">#787171</color> <!-- 正常颜色 -->
+    <color name="note_add_bottom_tools_navigation_selTextColor">#148af7</color> <!-- 选中颜色 -->
+    
+    <color name="note_add_bottom_tools_font_style_textColor">#000000</color>  <!-- 添加笔记工具字体样式设置正常字体颜色 -->
     
 </resources>

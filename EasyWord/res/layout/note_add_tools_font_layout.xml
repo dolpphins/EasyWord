@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+	添加笔记工具字体设置布局
+
+	@author mao
+ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   	xmlns:note="http://schemas.android.com/apk/res/com.mao.easyword"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/note_add_tools_font_padding">
+    
+    <!-- 字体大小 -->
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical">
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/font_size"
+	        android:textColor="@color/app_common_textColor"
+	        android:layout_marginBottom="5dip"/>
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:background="@drawable/app_common_border">
+	        <HorizontalScrollView 
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:scrollbars="none"
+		        android:requiresFadingEdge="none"
+		        android:padding="@dimen/note_add_tools_font_scrollview_padding">
+		 		<LinearLayout 
+		        	android:layout_width="wrap_content"
+		        	android:layout_height="wrap_content"
+		        	android:orientation="horizontal">
+		        	<GridView
+		        		android:id="@+id/note_add_tools_font_size_gv" 
+				        android:layout_width="match_parent"
+		        		android:layout_height="wrap_content"
+		        		android:horizontalSpacing="@dimen/note_add_tools_font_size_gv_horizontalPadding"
+		        		android:listSelector="@android:color/transparent"/>
+		    	</LinearLayout>       
+    	</HorizontalScrollView >
+	    </LinearLayout>
+	</LinearLayout>
+    
+	<!-- 字体颜色 -->
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical">
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/font_color"
+	        android:textColor="@color/app_common_textColor"
+	        android:layout_marginBottom="5dip"
+	        android:layout_marginTop="10dip"/>
+	        <GridView
+        		android:id="@+id/note_add_tools_font_color_gv" 
+		        android:layout_width="match_parent"
+        		android:layout_height="match_parent"
+        		android:background="@drawable/app_common_border"
+        		android:horizontalSpacing="@dimen/note_add_tools_font_color_gv_horizontalPadding"
+        		android:verticalSpacing="@dimen/note_add_tools_font_color_gv_verticalPadding"
+        		android:listSelector="@android:color/transparent" />
+	</LinearLayout>
+	
+	<!-- 字体样式 -->
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical">
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="@string/font_style"
+	        android:textColor="@color/app_common_textColor"
+	        android:layout_marginBottom="5dip"
+	        android:layout_marginTop="10dip"/>
+		<LinearLayout 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal">
+	        <!-- 粗体 -->
+		    <TextView
+		        android:id="@+id/note_add_tools_font_style_bold"
+		        android:layout_width="0dip"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/B"
+		        android:textStyle="bold"
+		        style="@style/note_add_bottom_tools_font_style_textStyle"/>
+		    <!-- 斜体 -->
+		    <TextView
+		        android:id="@+id/note_add_tools_font_style_italic" 
+		        android:layout_width="0dip"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/I"
+		        android:textStyle="italic"
+		        style="@style/note_add_bottom_tools_font_style_textStyle"/>
+		    <!-- 下划线 -->
+		    <com.mao.widget.MultiStyleTextView
+		        android:id="@+id/note_add_tools_font_style_underline"
+		        android:layout_width="0dip"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/U"
+		       	note:underline="true"
+		       	style="@style/note_add_bottom_tools_font_style_textStyle"/>
+		    <!-- 删除线 -->
+		   	<com.mao.widget.MultiStyleTextView
+		   	    android:id="@+id/note_add_tools_font_style_deleteline"
+		        android:layout_width="0dip"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="@string/U"
+		        note:deleteline="true"
+		        style="@style/note_add_bottom_tools_font_style_textStyle"/>
+		</LinearLayout>    
+	</LinearLayout>
+	
+</LinearLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+	添加笔记工具字体颜色选择未选中背景
+
+ -->
+
+<shape xmlns:android="http://schemas.android.com/apk/res/android" >
+    <corners
+        android:radius="1dip"/>
+    <stroke
+        android:width="1dip"
+        android:color="@color/gray"/>
+</shape>

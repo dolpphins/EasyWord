@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+	添加笔记布局
+
+	@author mao
+ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:orientation="vertical">
+	
+    <!-- 输入框 -->
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1000"
+        android:fillViewport="true">
+        <com.mao.widget.WordEditText 
+	        android:id="@+id/note_add_et"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:background="@null"
+	        android:gravity="top"
+	        android:scrollbars="none"
+			android:padding="@dimen/note_add_et_padding"/>
+    </ScrollView>
+    
+    <!-- 底部布局 -->
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:background="@color/white">
+        <!-- 底部图标布局 -->
+		<LinearLayout 
+		    android:id="@+id/note_add_bottom"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical">
+		    <include layout="@layout/app_common_horizontal_separator"/>
+		    <LinearLayout 
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:orientation="horizontal"
+		        android:paddingTop="@dimen/note_add_bottom_paddingTop"
+		        android:paddingBottom="@dimen/note_add_bottom_paddingBottom"
+		        android:clickable="true">
+		        <!-- 照片 -->
+		        <RelativeLayout
+		            android:id="@+id/note_add_bottom_photo" 
+		            android:layout_width="0dip"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:paddingTop="10dip"
+		            android:paddingBottom="10dip"
+		            android:clickable="true">
+		            <ImageView 
+			            android:layout_width="match_parent"
+			            android:layout_height="25dip"
+			            android:src="@drawable/note_add_photo_icon"
+			            style="@style/note_add_bottom_textStyle"
+			            android:layout_centerInParent="true"/>
+		        </RelativeLayout>
+		        <!-- 表情 -->
+		        <RelativeLayout
+		            android:id="@+id/note_add_bottom_emoji" 
+		            android:layout_width="0dip"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:paddingTop="10dip"
+		            android:paddingBottom="10dip"
+		            android:clickable="true">
+			        <ImageView 
+			            android:layout_width="match_parent"
+			            android:layout_height="25dip"
+			            android:src="@drawable/note_add_emoji_icon"
+			            style="@style/note_add_bottom_textStyle"
+			            android:layout_centerInParent="true"/>
+		        </RelativeLayout>
+		        <!-- 工具 -->
+		        <RelativeLayout
+		            android:id="@+id/note_add_bottom_tools" 
+		            android:layout_width="0dip"
+		            android:layout_height="wrap_content"
+		            android:layout_weight="1"
+		            android:paddingTop="10dip"
+		            android:paddingBottom="10dip"
+		            android:clickable="true">
+		        <ImageView 
+		            android:layout_width="match_parent"
+		            android:layout_height="25dip"
+		            android:src="@drawable/note_add_tools_icon"
+		            style="@style/note_add_bottom_textStyle"
+		            android:layout_centerInParent="true"/>
+		        </RelativeLayout>
+		    </LinearLayout>
+		    <include layout="@layout/app_common_horizontal_separator"/>
+		</LinearLayout>
+		
+	    <!-- 底部Content布局 -->
+	    <com.mao.widget.LayerFrameLayout
+	        android:id="@+id/note_add_bottom_content" 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content">
+	        <!-- 这里动态放要点击按钮显示相应的布局 -->
+	    </com.mao.widget.LayerFrameLayout>
+	    
+    </LinearLayout>
+	
+</LinearLayout>

@@ -6,7 +6,12 @@ public class App extends Application{
 
 	@Override
 	public void onCreate() {
-		// TODO Auto-generated method stub
 		super.onCreate();
+		
+		createFolder();
+	}
+	
+	private void createFolder() {
+		
 	}
 }

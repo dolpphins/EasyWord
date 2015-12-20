@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="multiStyleTextView">
+	    <attr name="underline" format="boolean"></attr>
+		<attr name="deleteline" format="boolean"></attr>
+   </declare-styleable>
+</resources>

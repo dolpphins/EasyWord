@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 笔记列表 -->
+    <ExpandableListView 
+        android:id="@+id/main_note_lv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+    
+    <!-- 添加图标 -->
+    <ImageView
+        android:id="@+id/main_note_add" 
+        android:layout_width="60dip"
+        android:layout_height="60dip"
+        android:src="@drawable/note_add_icon_selector"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="@dimen/main_add_note_marginRight"
+        android:layout_marginEnd="@dimen/main_add_note_marginRight"
+        android:layout_marginBottom="@dimen/main_add_note_marginBottom"
+        android:contentDescription="@null"
+        android:clickable="true"/>
+    
+</RelativeLayout>
