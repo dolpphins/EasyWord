@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.mao.easyword.R;
+import com.mao.utils.MethodCompat;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -159,7 +160,7 @@ public class EmotionConfiguration {
 	 * 	获取指定页指定位置的Drawable
 	 * </p>
 	 * 
-	 * @param context 山上下文
+	 * @param context 上下文
 	 * @param pageIndex 页索引,必须大于等于0且小于{@value #EMOTION_TOTAL_PAGE_NUMBER}
 	 * @param position 页内索引,必须大于等于0且小于该页表情数
 	 * 
@@ -184,6 +185,23 @@ public class EmotionConfiguration {
 				return null;
 			}
 		}
+	}
+	
+	/**
+	 * 通过字符串获取相应的表情
+	 * 
+	 * @param context 上下文
+	 * @param s 表情字符串
+	 * @return 获取成功返回对应的Drawable对象,失败返回null
+	 */
+	public static Drawable getEmotionDrawableByString(Context context, String s) {
+		if(context != null && !TextUtils.isEmpty(s)) {
+			Integer drawableId = sEmojiMap.get(s);
+			if(drawableId != null) {
+				return MethodCompat.getDrawable(context, drawableId);
+			}
+		}
+		return null;
 	}
 	
 	/**

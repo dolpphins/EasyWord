@@ -91,8 +91,6 @@ public class EmotionViewPagerAdapter extends PagerAdapter{
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Log.i(TAG, "pageIndex:" + pageIndex);
-				Log.i(TAG, "position:" + position);
 				if(mAttachEditText != null) {
 					if(EmotionConfiguration.isDelete(pageIndex, position)) {
 						mAttachEditText.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL));
@@ -106,7 +104,7 @@ public class EmotionViewPagerAdapter extends PagerAdapter{
 							return;
 						}
 						SpannableString ss = new SpannableString(emotionString);
-						ImageSpan span = new ImageSpan(d, ImageSpan.ALIGN_BASELINE);
+						ImageSpan span = new ImageSpan(d, emotionString, ImageSpan.ALIGN_BASELINE);
 						//用Spannable.SPAN_INCLUSIVE_INCLUSIVE
 						ss.setSpan(span, 0, emotionString.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 						mAttachEditText.getText().insert(mAttachEditText.getSelectionStart(), ss);

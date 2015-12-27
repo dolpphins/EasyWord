@@ -59,4 +59,21 @@ public class TextUtils {
 		}
 		return sb.toString();
 	}
+	
+	/**
+	 * 字节数组转字符串,该方法采用将每一个字节转换为整数再拼接成字符串的方法
+	 * 
+	 * @param b 要转换的字节数组,不能为空
+	 * @return 转换成功返回相应的字符串,失败返回null.
+	 */
+	public static String byte2String(byte[] b) {
+		if(b == null) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder();
+		for(byte by : b) {
+			sb.append(by);
+		}
+		return sb.toString();
+	}
 }

@@ -21,15 +21,19 @@ public class BaseActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		
 		ActionBar actionBar = getActionBar();
-		actionBar.setDisplayOptions(0);
-		actionBar.setDisplayShowCustomEnabled(true);
-		mActionBarView = LayoutInflater.from(this).inflate(R.layout.app_common_actionbar, null);
-		ActionBar.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		actionBar.setCustomView(mActionBarView, params);
+		if(actionBar != null) {
+			actionBar.setDisplayOptions(0);
+			actionBar.setDisplayShowCustomEnabled(true);
+			mActionBarView = LayoutInflater.from(this).inflate(R.layout.app_common_actionbar, null);
+			ActionBar.LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+			actionBar.setCustomView(mActionBarView, params);
+		}
 		
 		if(getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
 			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		}
+		//设置当前Window背景颜色为白色
+		getWindow().setBackgroundDrawableResource(R.color.white);
 	}
 	
 	public TextView setActionBarLeftText(int id) {

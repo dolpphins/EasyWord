@@ -100,4 +100,20 @@ public class ImageUtils {
     		return bitmap.getRowBytes() * bitmap.getHeight();
     	}
     }
+    
+    /**
+     * 创建缩放位图
+     * 
+     * @param src 要进行缩放的位图
+     * @param factor 缩放因子,必须大于0,1表示返回原位图
+     * @return 成功返回缩放后的位图,失败返回null.
+     */
+    public static Bitmap createScaledBitmap(Bitmap src, float factor) {
+    	if(src == null || factor <= 0.0f) {
+    		return null;
+    	}
+    	int dstWidth = Math.round(src.getWidth() * factor);
+    	int dstHeight = Math.round(src.getHeight() * factor);
+    	return Bitmap.createScaledBitmap(src, dstWidth, dstHeight, true);
+    }
 }

@@ -95,7 +95,12 @@ public class FontManager {
 	 * @return 返回默认字体大小
 	 */
 	public static String getDefaultFontSize() {
-		return sFont.getSize() + "";
+		float size = sFont.getSize();
+		if(size - (int)size < 1e-6) {
+			return (int)size + "";
+		} else {
+			return size + "";
+		}
 	}
 	
 	/**

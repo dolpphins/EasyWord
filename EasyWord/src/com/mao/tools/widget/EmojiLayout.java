@@ -1,5 +1,13 @@
 package com.mao.tools.widget;
 
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
+import org.w3c.dom.UserDataHandler;
+
 import com.mao.adapter.EmotionViewPagerAdapter;
 import com.mao.easyword.R;
 import com.mao.interf.Togglable;
@@ -14,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * 表情布局
@@ -66,6 +75,7 @@ public class EmojiLayout extends LinearLayout implements Togglable {
 	
 	@Override
 	public void show() {
+		mPagerAdapter.notifyDataSetChanged();//强制ViewPager重绘
 		mWrapView.show();
 	}
 	

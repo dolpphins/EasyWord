@@ -2,6 +2,7 @@ package com.mao.tools.widget;
 
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
@@ -63,10 +64,12 @@ public class ToggleWrapView {
 //	}
 	
 	public void toggle() {
-		if(mView != null && mView.getVisibility() == View.VISIBLE) {
-			hide();
-		} else {
-			show();
+		if(mView != null) {
+			if(isShowing) {
+				hide();
+			} else {
+				show();
+			}
 		}
 	}
 	
@@ -77,8 +80,10 @@ public class ToggleWrapView {
 //			mView.startAnimation(mShowAnimation);
 //			isShwoing = true;
 //		}
-		if(mView != null) {
+		if(mView != null && !isShowing) {
 			mView.setVisibility(View.VISIBLE);
+			mView.setVisibility(View.VISIBLE);
+			System.out.println(mView.getClass().getName() + " show");
 			isShowing = true;
 		}
 	}
@@ -101,7 +106,7 @@ public class ToggleWrapView {
 //			mView.startAnimation(mHideAnimation);
 //			isShwoing = false;
 //		}
-		if(mView != null) {
+		if(mView != null && isShowing) {
 			mView.setVisibility(View.GONE);
 			isShowing = false;
 		}

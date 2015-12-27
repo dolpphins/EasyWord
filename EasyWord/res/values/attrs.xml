@@ -4,4 +4,9 @@
 	    <attr name="underline" format="boolean"></attr>
 		<attr name="deleteline" format="boolean"></attr>
    </declare-styleable>
+   <declare-styleable name="EmojiTextView">
+	    <attr name="emojiSize" format="dimension"></attr>
+		<attr name="emojiMax" format="dimension"></attr>
+		<attr name="emojiMin" format="dimension"></attr>
+   </declare-styleable>
 </resources>

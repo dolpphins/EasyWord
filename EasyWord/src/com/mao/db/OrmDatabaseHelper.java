@@ -30,7 +30,7 @@ public class OrmDatabaseHelper extends OrmLiteSqliteOpenHelper{
 	@Override
 	public void onCreate(SQLiteDatabase arg0, ConnectionSource arg1) {
 		try {
-			TableUtils.clearTable(getConnectionSource(), Note.class);
+			TableUtils.createTable(getConnectionSource(), Note.class);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

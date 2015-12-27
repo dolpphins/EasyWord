@@ -1,7 +1,11 @@
 package com.mao.utils;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -84,6 +88,41 @@ public class IoUtils {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
+		}
+	}
+	
+	/**
+	 * 复制指定路径对应的流到指定路径
+	 * 
+	 * @param srcPath 源路径
+	 * @param dstPath 目的路径
+	 * @return 复制成功返回true,失败返回false.
+	 */
+	public static boolean copy(String srcPath, String dstPath) {
+		FileInputStream fis = null;
+		BufferedInputStream bis = null;
+		FileOutputStream fos = null;
+		BufferedOutputStream bos = null;
+		try {
+			fis = new FileInputStream(srcPath);
+			bis = new BufferedInputStream(fis);
+			fos = new FileOutputStream(dstPath);
+			bos = new BufferedOutputStream(fos);
+			
+			int length;
+			byte[] b = new byte[1024];
+			while((length = bis.read(b)) != -1) {
+				bos.write(b, 0, length);
+			}
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		} finally {
+			closeInputStream(bis);
+			closeInputStream(fis);
+			closeOutputStream(bos);
+			closeOutputStream(fos);
 		}
 	}
 }

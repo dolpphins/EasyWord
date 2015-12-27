@@ -7,6 +7,7 @@ import java.util.Set;
 
 import com.mao.cache.MemoryPicturesCacheManager;
 import com.mao.conf.ActivityRequestResultCode;
+import com.mao.conf.AppConfig;
 import com.mao.easyword.R;
 import com.mao.ui.PicturesHelper;
 import com.mao.utils.ImageUtils;
@@ -131,8 +132,9 @@ public class SelectPictureGridViewAdapter extends BaseAdapter {
 				
 				@Override
 				public void onClick(View v) {
-					mTakePhotoUrl = "123.jpg";
-					PicturesHelper.takePhotoByCamera(mActivity, "", mTakePhotoUrl, ActivityRequestResultCode.TAKE_PHOTO_ACTIVITY_REQUEST_CODE);
+					String name = "123.jpg";
+					mTakePhotoUrl = AppConfig.MAIN_SDCARD_FOLDER_PATH + name;
+					PicturesHelper.takePhotoByCamera(mActivity, AppConfig.MAIN_SDCARD_FOLDER_PATH, name, ActivityRequestResultCode.TAKE_PHOTO_ACTIVITY_REQUEST_CODE);
 				}
 			});
 		}
@@ -175,7 +177,7 @@ public class SelectPictureGridViewAdapter extends BaseAdapter {
 		
 		if(bm != null) {
 			String s = TextUtils.convertByteCount(ImageUtils.sizeOfBitmap(bm));
-			System.out.println(s);
+			//System.out.println(s);
 		}
 		
 		return bm;

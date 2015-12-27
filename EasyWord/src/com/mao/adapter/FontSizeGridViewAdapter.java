@@ -10,7 +10,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
@@ -66,11 +65,13 @@ public class FontSizeGridViewAdapter extends BaseAdapter {
 		} else {
 			tv = ((TextView) convertView); 
 		}
+		tv.setBackgroundColor(Color.WHITE);
 		tv.setTextColor(Color.BLACK);//防止错乱
 		
 		tv.setText(mFontSizeList.get(position));
 		if(mFontSizeList.get(position).equals(mCurrentFontSize)) {
-			tv.setTextColor(Color.BLUE);
+			tv.setBackgroundColor(mContext.getResources().getColor(R.color.light_blue));
+			tv.setTextColor(Color.WHITE);
 		}
 		
 		return tv;

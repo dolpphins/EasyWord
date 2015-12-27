@@ -8,6 +8,9 @@
     <color name="blue">#0000ff</color>
     <color name="gray">#cccccc</color>
     <color name="light_blue">#4285f4</color>
+    <color name="deep_gray">#A9A9A9</color>
+    
+    <color name="app_main_color">#0ecb5c</color>
     
     <color name="app_common_textColor">#BDBDBD</color>
     
@@ -20,5 +23,15 @@
     <color name="note_add_bottom_tools_navigation_selTextColor">#148af7</color> <!-- 选中颜色 -->
     
     <color name="note_add_bottom_tools_font_style_textColor">#000000</color>  <!-- 添加笔记工具字体样式设置正常字体颜色 -->
+    
+    <color name="login_backgroundColor">#f4f4f4</color>
+    <color name="get_validate_code_backgroundColor">#ffa018</color>
+    
+    <color name="app_common_button_selBackgroundColor">#09aa4c</color>
+
+    <!-- 笔记列表 -->
+    <color name="note_list_item_title_textColor">#535353</color>
+    <color name="note_list_item_content_textColor">#727272</color>
+    <color name="note_list_item_time_textColor">#9cc35e</color>
     
 </resources>

@@ -35,14 +35,14 @@ public class PicturesHelper {
 		}
 		
 		try {
-			File file = new File(Environment.getExternalStorageDirectory(),filePath);
+			File file = new File(filePath);
 			if(!file.exists()){
 				boolean isSuccess = file.mkdirs();
 				if(!isSuccess) {
 					return null;
 				}
 			}
-			file = new File(Environment.getExternalStorageDirectory(),filePath + fileName);
+			file = new File(filePath + fileName);
 			Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
 			Uri uri = Uri.fromFile(file);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);

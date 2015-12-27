@@ -37,4 +37,12 @@
     
     <dimen name="note_add_bottom_tools_font_style_textSize">35sp</dimen>
     
+    <!-- 笔记列表 -->
+    <dimen name="note_list_item_title_textSize">20sp</dimen>
+    <dimen name="note_list_item_content_textSize">16sp</dimen>
+    <dimen name="note_list_item_content_emojiSize">16sp</dimen>
+    <dimen name="note_list_item_time_textSize">12sp</dimen>
+    <dimen name="note_list_item_content_marginTop">5dip</dimen>
+    <dimen name="note_list_item_content_marginBottom">5dip</dimen>
+    
 </resources>

@@ -9,17 +9,21 @@ import java.util.Set;
 
 import com.mao.adapter.FontColorGridViewAdapter;
 import com.mao.adapter.FontSizeGridViewAdapter;
+import com.mao.dialog.ColorPicker;
+import com.mao.dialog.ColorPicker.OnColorSelectedListener;
 import com.mao.easyword.R;
 import com.mao.manager.FontManager;
+import com.mao.screen.DisplayUtils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
@@ -54,6 +58,8 @@ public class ToolsFontLayout extends LinearLayout {
 	private FontColorGridViewAdapter fontColorAdapter;
 	private List<Integer> fontColorList;
 	private int mCurrentFontColor;
+	
+	private ColorPicker mColorPicker;
 	
 	/**
 	 * 字体样式相关
@@ -156,15 +162,11 @@ public class ToolsFontLayout extends LinearLayout {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if(position == fontColorList.size()) {
-					
+					//显示颜色选择器对话框
+					showColorPickerDialog();
 				} else {
 					int color = fontColorList.get(position);
-					if(mOnFontConfigurationListener != null) {
-						mOnFontConfigurationListener.OnFontColorChange(mCurrentFontColor, color);
-					}
-					mCurrentFontColor = color;
-					fontColorAdapter.setCurrentFontColor(mCurrentFontColor);
-					fontColorAdapter.notifyDataSetChanged();
+					updateColor(color);
 				}
 			}
 		});
@@ -204,6 +206,15 @@ public class ToolsFontLayout extends LinearLayout {
 		});
 	}
 	
+	private void updateColor(int color) {
+		mCurrentFontColor = color;
+		fontColorAdapter.setCurrentFontColor(mCurrentFontColor);
+		fontColorAdapter.notifyDataSetChanged();
+		if(mOnFontConfigurationListener != null) {
+			mOnFontConfigurationListener.OnFontColorChange(mCurrentFontColor, color);
+		}
+	}
+	
 	private void handleFontStyleClick(FontManager.TextStyle style, TextView tv) {
 		if(isInTextStyle(mTextStyleSet, style)) {
 			mTextStyleSet.remove(style);
@@ -234,7 +245,32 @@ public class ToolsFontLayout extends LinearLayout {
 			tv.setTextColor(getResources().getColor(R.color.note_add_bottom_tools_font_style_textColor));
 		}
 	}
-
+	
+	
+	private void showColorPickerDialog() {
+		//懒加载
+		if(mColorPicker == null) {
+			//如果getContext获取到的不是一个Activity对象会抛异常
+			try {
+				mColorPicker = new ColorPicker(getContext());
+				WindowManager.LayoutParams params = mColorPicker.getWindow().getAttributes();
+				int screenWidth = DisplayUtils.getScreenWidthPixels((Activity)getContext());
+				params.width = screenWidth * 4 / 5;
+				params.height = WindowManager.LayoutParams.WRAP_CONTENT; 
+				mColorPicker.setOnColorSelectedListener(new OnColorSelectedListener() {
+					
+					@Override
+					public void OnColorSelected(int color) {
+						updateColor(color);
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		mColorPicker.setColor(mCurrentFontColor);//要先设置当前颜色值
+		mColorPicker.show();
+	}
 	/**
 	 * 设置配置改变监听器
 	 * 

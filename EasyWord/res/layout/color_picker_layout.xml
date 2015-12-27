@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+	颜色选择对话框布局
+
+ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:paddingLeft="10dip"
+    android:paddingRight="10dip"
+    android:paddingTop="20dip"
+    android:paddingBottom="20dip">
+    <!-- 标题 -->
+    <TextView 
+        android:id="@+id/color_picker_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/color_picker"
+        android:textSize="25sp"
+        android:textColor="@color/deep_gray"/>
+    <!-- 颜色选择View -->
+    <com.mao.widget.ColorPickerView
+        android:id="@+id/color_picker_view" 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+	<!-- 当前颜色 -->
+	<TextView 
+	    android:id="@+id/color_picker_current_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:text="@string/no_select_color"/>
+	<!-- 操作 -->
+	<LinearLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_marginTop="20dip"
+	    android:layout_marginBottom="10dip">
+	    <!-- 取消 -->
+	    <Button 
+	        android:id="@+id/color_picker_cancel"
+        	android:layout_width="0dip"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="1"
+        	android:text="@string/cancel"
+        	android:background="@drawable/app_common_button_selector"
+        	android:textColor="@color/white"
+        	android:layout_marginLeft="15dip"
+        	android:layout_marginRight="15dip"/>
+	    <!-- 确定 -->
+	    <Button 
+	        android:id="@+id/color_picker_ok"
+        	android:layout_width="0dip"
+        	android:layout_height="wrap_content"
+        	android:layout_weight="1"
+        	android:text="@string/ok"
+        	android:background="@drawable/app_common_button_selector"
+        	android:textColor="@color/white"
+        	android:layout_marginLeft="15dip"
+        	android:layout_marginRight="15dip"/>
+	</LinearLayout>
+    
+</LinearLayout>

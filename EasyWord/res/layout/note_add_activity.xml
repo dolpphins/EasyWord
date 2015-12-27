@@ -11,6 +11,14 @@
     android:layout_height="match_parent" 
     android:orientation="vertical">
 	
+    <com.mao.widget.NoteTitleEditText 
+        android:id="@+id/note_add_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/input_title_tip"
+        android:background="@drawable/note_add_title_bg"
+        android:singleLine="true"
+        android:maxLength="80"/>
     <!-- 输入框 -->
     <ScrollView 
         android:layout_width="match_parent"

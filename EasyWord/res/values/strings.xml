@@ -23,5 +23,37 @@
 	<string name="select_picture">选择图片</string>
 	<string name="ok">确定</string>
 	<string name="cancel">取消</string>
+    <string name="write_note">写笔记</string>
+    <string name="tip">提示</string>
+    <string name="tip_message">你已修改该笔记，是否保存？</string>
+    <string name="abandon">舍弃</string>
+    <string name="save">保存</string>
+    <string name="input_title_tip">请输入标题</string>
+    <string name="input_content_tip">请输入内容</string>
+    <string name="save_fail">保存失败</string>
+    <string name="save_success">保存成功</string>
+    
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    
+    <string name="phone">手机号</string>
+    <string name="password">密码</string>
+    <string name="validate_code">验证码</string>
+    <string name="login_fail">登录失败</string>
+    <string name="input_phone_tip">请输入手机号</string>
+    <string name="input_password_tip">请输入密码</string>
+    <string name="input_validatecode_tip">请输入验证码</string>
+    <string name="get_validate_code">获取验证码</string>
+    <string name="next_step">下一步</string>
+    <string name="finish">完成</string>
+    <string name="reget">重新获取</string>
+    <string name="validate_code_error">验证码不正确</string>
+    <string name="register_fail">注册失败</string>
+    <string name="phone_alread_register">该手机号码已被注册</string>
+    <string name="default_note_picture_display_text">[图片]</string>
+    
+    <string name="color_picker">拾色器</string>
+    <string name="current_color">当前颜色</string>
+    <string name="no_select_color">未选择颜色</string>
     
 </resources>
