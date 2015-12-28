@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 
+	查看笔记Activity布局
+
+ -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <!-- 标题 -->
+    <TextView
+        android:id="@+id/note_view_title" 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <!-- 分割线 -->
+    <include layout="@layout/app_common_horizontal_separator"/>
+    <!-- 内容 -->
+    <ScrollView 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+        <TextView 
+            android:id="@+id/note_view_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+</LinearLayout>

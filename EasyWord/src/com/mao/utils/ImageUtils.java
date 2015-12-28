@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -115,5 +116,22 @@ public class ImageUtils {
     	int dstWidth = Math.round(src.getWidth() * factor);
     	int dstHeight = Math.round(src.getHeight() * factor);
     	return Bitmap.createScaledBitmap(src, dstWidth, dstHeight, true);
+    }
+    
+    /**
+     * Drawable转Bitmap
+     * 
+     * @param d 要转换的Drawable对象,不能为null.
+     * @return 转换成功返回一幅位图,失败返回null.
+     */
+    public static Bitmap drawable2Bitmap(Drawable d) {
+    	if(d == null) {
+    		return null;
+    	}
+    	Bitmap bm = Bitmap.createBitmap(d.getIntrinsicWidth(), d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+    	Canvas canvas = new Canvas(bm);
+    	d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+    	d.draw(canvas);
+    	return bm;
     }
 }

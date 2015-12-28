@@ -27,6 +27,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,6 +50,7 @@ public class ToolsFontLayout extends LinearLayout {
 	private FontSizeGridViewAdapter fontSizeAdapter;
 	private List<String> fontSizeList;
 	private float mCurrentFontSize;
+	private HorizontalScrollView note_add_tools_font_size_scrollview;
 	
 	/**
 	 * 字体颜色相关
@@ -91,6 +93,7 @@ public class ToolsFontLayout extends LinearLayout {
 	private void initPagerLayout() {
 		//字体相关
 		note_add_tools_font_size_gv = (GridView) mView.findViewById(R.id.note_add_tools_font_size_gv);
+		note_add_tools_font_size_scrollview = (HorizontalScrollView) mView.findViewById(R.id.note_add_tools_font_size_scrollview);
 		fontSizeList = FontManager.getFontSizeList();
 		note_add_tools_font_size_gv.setNumColumns(fontSizeList.size());
 		ViewGroup.LayoutParams params = note_add_tools_font_size_gv.getLayoutParams();
@@ -125,6 +128,17 @@ public class ToolsFontLayout extends LinearLayout {
 				int totlaWidth = note_add_tools_font_color_gv.getWidth();
 				fontColorAdapter.setTotalWidth(totlaWidth);
 				fontColorAdapter.notifyDataSetChanged();
+				note_add_tools_font_color_gv.getViewTreeObserver().removeOnPreDrawListener(this);
+				//滚动到适当的位置
+				int index = FontManager.getFontSizeIndex(mCurrentFontSize);
+				if(index > 0) {
+					float tvWidth = FontManager.getMaxTextWidth(getResources().getDimension(R.dimen.note_add_tools_font_size_item_textSize));
+					float horizontalPadding = getResources().getDimension(R.dimen.note_add_tools_font_size_gv_horizontalPadding);
+					float scrollOffset = (tvWidth + horizontalPadding) * index;
+					System.out.println("scrollOffset:" + scrollOffset);
+					note_add_tools_font_size_scrollview.scrollBy((int) scrollOffset, 0);
+				}
+				
 				note_add_tools_font_color_gv.getViewTreeObserver().removeOnPreDrawListener(this);
 				
 				return true;

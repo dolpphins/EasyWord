@@ -104,6 +104,24 @@ public class FontManager {
 	}
 	
 	/**
+	 * 获取指定字体大小在字体大小集合中的索引位置,从0开始.
+	 * 
+	 * @param fontSize 字体大小,单位:px
+	 * @return 返回对应的索引位置,不存在返回-1.
+	 */
+	public static int getFontSizeIndex(float fontSize) {
+		int size = sFontSizeList.size();
+		for(int i = 0; i < size; i++) {
+			float f = Float.parseFloat(sFontSizeList.get(i));
+			if(Math.abs(fontSize - f) < 1e-6) {
+				return i;
+			}
+			
+		}
+		return -1;
+	}
+	
+	/**
 	 * 获取字体颜色列表
 	 * 
 	 * @return 返回字体颜色列表

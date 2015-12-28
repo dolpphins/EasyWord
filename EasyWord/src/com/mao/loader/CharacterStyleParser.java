@@ -77,7 +77,7 @@ public class CharacterStyleParser {
 		int[] absoluteSizeSpanInfo = new int[length];
 		int[] foregroundColorSpanInfo = new int[length];
 		int[] styleSpanInfo = new int[length];
-		String[] imageSpanInfo = new String[length];
+		ImageSpanEntry[] imageSpanInfo = new ImageSpanEntry[length];
 		
 		for(int i = 0; i < length; i++) {
 			Object[] objs = s.getSpans(i, i + 1, Object.class);
@@ -90,8 +90,10 @@ public class CharacterStyleParser {
 					} else if(obj instanceof StyleSpan) {
 						styleSpanInfo[i] = ((StyleSpan)obj).getStyle();
 					} else if(obj instanceof ImageSpan) {
-						String source = ((ImageSpan)obj).getSource();
-						imageSpanInfo[i] = source;
+						ImageSpan span = (ImageSpan)obj;
+						imageSpanInfo[i] = new ImageSpanEntry();
+						imageSpanInfo[i].imageSpan =  span;
+						imageSpanInfo[i].source = span.getSource();
 					}
 				}
 			}
@@ -140,33 +142,35 @@ public class CharacterStyleParser {
 		return jsonArray;
 	}
 	
-	private JSONArray buildCharacterStyleJSONArray(String[] info) throws JSONException {
+	private JSONArray buildCharacterStyleJSONArray(ImageSpanEntry[] info) throws JSONException {
 		if(info.length <= 0) {
 			return null;
 		}
-
+		
 		JSONArray jsonArray = new JSONArray();
 		int i = 0;
 		for(;;) {
 			//寻找下一个非空的位置
-			while(i < info.length && TextUtils.isEmpty(info[i])) {
+			while(i < info.length && info[i] == null) {
 				i++;
 			}
 			if(i >= info.length) {
 				break;
 			}
-			String lastValue = info[i];
+			ImageSpanEntry lastValue = info[i];
 			StringBuilder sb = new StringBuilder();
 			sb.append(i);
 			sb.append(JSON_INDEX_SEPARATOR);
 			//寻找该ImageSapn结束的位置
-			while(i < info.length && lastValue.equals(info[i])) {
+			while(i < info.length && info[i] != null 
+								  && lastValue.source.equals(info[i].source)
+								  && lastValue.imageSpan.equals(info[i].imageSpan)) {
 				i++;
 			}
 			sb.append(i);
 			JSONObject jsonObject = new JSONObject();
 			jsonObject.put(SPAN_JSON_KEY_KEY, sb.toString());
-			jsonObject.put(SPAN_JSON_VALUE_KEY, lastValue);
+			jsonObject.put(SPAN_JSON_VALUE_KEY, lastValue.source);
 			jsonArray.put(jsonObject);
 		}
 		
@@ -255,6 +259,13 @@ public class CharacterStyleParser {
 			return sourceList;
 		}
 		return null;
+	}
+	
+	//在构建json数据处理ImageSpan使用
+	static class ImageSpanEntry {
+		
+		private ImageSpan imageSpan;
+		private String source;
 	}
 	
 	/**

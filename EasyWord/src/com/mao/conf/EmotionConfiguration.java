@@ -296,7 +296,7 @@ public class EmotionConfiguration {
 		}
 		Integer id = sEmojiMap.get(text);
 		if(id != null) {
-			return context.getResources().getDrawable(id);
+			return MethodCompat.getDrawable(context, id);
 		}
 		return null;
 	}

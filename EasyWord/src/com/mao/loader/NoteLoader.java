@@ -92,7 +92,7 @@ public class NoteLoader {
 			return null;
 		}
 		FileUtils.createDirIfNotExist(path);
-		FileUtils.clearDir(path);
+		//FileUtils.clearDir(path);
 		//开始复制文件
 		List<String> successSrcPathList = new ArrayList<String>();
 		Set<Entry<String, String>> entrys = fileMap.entrySet();
@@ -100,10 +100,20 @@ public class NoteLoader {
 			String dstName = entry.getKey();
 			String srcPath = entry.getValue();
 			String dstPath = path + dstName;
-			if(FileUtils.copyFile(srcPath, dstPath)) {
+			if(FileUtils.exist(dstPath) || FileUtils.copyFile(srcPath, dstPath)) {
 				successSrcPathList.add(dstPath);
 			}
 		}
+		//删除掉其它文件
+		String[] filenames = FileUtils.getDirectory(path);
+		if(filenames != null) {
+			for(String s : filenames) {
+				if(!successSrcPathList.contains(s)) {
+					FileUtils.removeFileOrDirectory(s);
+				}
+			}
+		}
+		
 		return successSrcPathList;
 	}
 	

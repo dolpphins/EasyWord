@@ -33,5 +33,7 @@
     <color name="note_list_item_title_textColor">#535353</color>
     <color name="note_list_item_content_textColor">#727272</color>
     <color name="note_list_item_time_textColor">#9cc35e</color>
+    <!-- 添加笔记 -->
+    <color name="note_add_bottom_backgroundColor">#f5f5f5</color>
     
 </resources>

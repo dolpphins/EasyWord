@@ -7,12 +7,14 @@ import com.mao.adapter.NoteListViewAdapter;
 import com.mao.bean.Note;
 import com.mao.conf.ActivityRequestResultCode;
 import com.mao.easyword.R;
+import com.mao.eventbus.NoteEntry;
 import com.mao.service.NoteListIntentService;
 import com.mao.ui.base.BackActivity;
 import com.mao.ui.base.BaseActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -46,22 +48,15 @@ public class MainActivity extends BaseActivity {
 		
 		setEventForView();
 		
-		registerEventBus();
 		//异步获取数据
 		Intent intent = new Intent(this, NoteListIntentService.class);
 		startService(intent);
 	}
 	
-	private void registerEventBus() {
-		if(!EventBus.getDefault().isRegistered(this)) {
-			EventBus.getDefault().register(this);
-		}
-	}
-	
-	private void unRegisterEventBus() {
-		if(EventBus.getDefault().isRegistered(this)) {
-			EventBus.getDefault().unregister(this);
-		}
+	@Override
+	protected void onStart() {
+		super.onStart();
+		updateUI();
 	}
 	
 	public void onEventMainThread(List<Note> noteList) {
@@ -73,16 +68,18 @@ public class MainActivity extends BaseActivity {
 		}
 	}
 	
+	//如果是新建Note而不是修改则preNote为null
+	public void onEventMainThread(NoteEntry entry) {
+		
+		if(entry != null && entry.getNewNote() != null) {
+			createOrUpdateList(entry.getNewNote());
+		}
+	}
+	
 	private void updateUI() {
 		if(mNoteListViewAdapter != null) {
 			mNoteListViewAdapter.notifyDataSetChanged();
 		}
-	}
-	
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		unRegisterEventBus();
 	}
 	
 	private void initView() {
@@ -103,7 +100,8 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(MainActivity.this, NoteAddOrReviseActivity.class);
-				startActivityForResult(intent, ActivityRequestResultCode.NOTE_LIST_TO_ADDORREVISE_ACTIVITY_REQUEST_CODE);
+				//startActivityForResult(intent, ActivityRequestResultCode.NOTE_LIST_TO_ADDORREVISE_ACTIVITY_REQUEST_CODE);
+				startActivity(intent);
 			}
 		});
 		//ListView Item点击事件
@@ -111,27 +109,11 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				Intent intent = new Intent(MainActivity.this, NoteAddOrReviseActivity.class);
+				Intent intent = new Intent(MainActivity.this, NoteViewActivity.class);
 				intent.putExtra("note", mNoteList.get(position));
-				startActivityForResult(intent, ActivityRequestResultCode.NOTE_LIST_TO_ADDORREVISE_ACTIVITY_REQUEST_CODE);
+				startActivityForResult(intent, ActivityRequestResultCode.NOTE_LIST_TO_VIEW_ACTIVITY_REQUEST_CODE);
 			}
 		});
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		//从NoteAddOrReviseActivity返回且已修改数据
-		if(requestCode == ActivityRequestResultCode.NOTE_LIST_TO_ADDORREVISE_ACTIVITY_REQUEST_CODE
-				&& resultCode == ActivityRequestResultCode.NOTE_LIST_TO_ADDORREVISE_ACTIVITY_RESULT_CODE
-				&& data != null) {
-			Note note = (Note) data.getSerializableExtra("note");
-			if(note != null) {
-				if(createOrUpdateList(note)) {
-					//更新UI
-					updateUI();
-				}
-			}
-		}
 	}
 	
 	private boolean createOrUpdateList(Note note) {
@@ -140,11 +122,20 @@ public class MainActivity extends BaseActivity {
 			//已经存在,那么更新
 			if(mNoteList.get(i).getGUID().equals(note.getGUID())) {
 				mNoteList.set(i, note);
+				//移到最前面
+				Note temp = mNoteList.get(i);
+				mNoteList.remove(i);
+				mNoteList.add(0, temp);
 				return true;
 			}
 		}
 		//不存在,那么添加
 		mNoteList.add(0, note);
+		return true;
+	}
+	
+	@Override
+	protected boolean requestRegisterEventBus() {
 		return true;
 	}
 }

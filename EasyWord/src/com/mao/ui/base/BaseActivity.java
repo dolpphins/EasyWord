@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import de.greenrobot.event.EventBus;
 
 public class BaseActivity extends Activity {
 	
@@ -34,6 +35,10 @@ public class BaseActivity extends Activity {
 		}
 		//设置当前Window背景颜色为白色
 		getWindow().setBackgroundDrawableResource(R.color.white);
+		
+		if(requestRegisterEventBus()) {
+			registerEventBus();
+		}
 	}
 	
 	public TextView setActionBarLeftText(int id) {
@@ -88,5 +93,33 @@ public class BaseActivity extends Activity {
 		if(mActionBarView != null) {
 			mActionBarView.setBackgroundColor(color);
 		}
+	}
+	
+	private void registerEventBus() {
+		if(!EventBus.getDefault().isRegistered(this)) {
+			EventBus.getDefault().register(this);
+		}
+	}
+	
+	private void unRegisterEventBus() {
+		if(EventBus.getDefault().isRegistered(this)) {
+			EventBus.getDefault().unregister(this);
+		}
+	}
+	
+	/**
+	 * 请求注册事件总线,使用的是{@link EventBus#getDefault()},
+	 * 注册完你就可以监听事件,默认不注册
+	 * 
+	 * @return 返回true表示注册,false表示不注册.
+	 */
+	protected boolean requestRegisterEventBus() {
+		return false;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unRegisterEventBus();
 	}
 }

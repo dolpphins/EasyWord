@@ -18,7 +18,8 @@
         android:hint="@string/input_title_tip"
         android:background="@drawable/note_add_title_bg"
         android:singleLine="true"
-        android:maxLength="80"/>
+        android:maxLength="80"
+        android:textSize="16sp"/>
     <!-- 输入框 -->
     <ScrollView 
         android:layout_width="match_parent"
@@ -55,7 +56,8 @@
 		        android:orientation="horizontal"
 		        android:paddingTop="@dimen/note_add_bottom_paddingTop"
 		        android:paddingBottom="@dimen/note_add_bottom_paddingBottom"
-		        android:clickable="true">
+		        android:clickable="true"
+		        android:background="@color/note_add_bottom_backgroundColor">
 		        <!-- 照片 -->
 		        <RelativeLayout
 		            android:id="@+id/note_add_bottom_photo" 
@@ -105,7 +107,7 @@
 		            android:layout_centerInParent="true"/>
 		        </RelativeLayout>
 		    </LinearLayout>
-		    <include layout="@layout/app_common_horizontal_separator"/>
+		    <!-- <include layout="@layout/app_common_horizontal_separator"/> -->
 		</LinearLayout>
 		
 	    <!-- 底部Content布局 -->

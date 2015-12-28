@@ -13,16 +13,19 @@ import com.mao.conf.ActivityRequestResultCode;
 import com.mao.db.DBHelper;
 import com.mao.easyword.R;
 import com.mao.easyword.UserManager;
+import com.mao.eventbus.NoteEntry;
 import com.mao.interf.Togglable;
 import com.mao.loader.CharacterStyleParser;
+import com.mao.loader.DefaultImageSpanHandler;
 import com.mao.loader.NoteLoader;
+import com.mao.loader.SpannedLoader;
 import com.mao.manager.FontManager;
 import com.mao.manager.FontManager.TextStyle;
-import com.mao.screen.DisplayUtils;
 import com.mao.tools.widget.EmojiLayout;
 import com.mao.tools.widget.NavigationViewPagerLayout;
 import com.mao.tools.widget.ToolsFontLayout;
 import com.mao.ui.base.BackActivity;
+import com.mao.utils.IoUtils;
 import com.mao.utils.MethodCompat;
 import com.mao.utils.RandomUtils;
 import com.mao.utils.SoftInputHelper;
@@ -38,14 +41,15 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.CharacterStyle;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import de.greenrobot.event.EventBus;
 
 /**
  * 
@@ -82,10 +86,14 @@ public class NoteAddOrReviseActivity extends BackActivity {
 	//默认使用字体配置
 	private Font mFont = FontManager.getDefaultFont(); 
 	
+	/** 修改前的Note对象 */
+	private Note mPreNote;
 	/** 当前Note对象 */
 	private Note mNote;
 	/** 保存当前笔记用到的所有文件的源路径与目标文件名map,key:目标文件名,value:源路径 */
-	private Map<String, String> mfileUrlMap = new LinkedHashMap<String, String>();
+	private Map<String, String> mfileUrlMap = new LinkedHashMap<String, String>();	
+	
+	private String basePath;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +110,12 @@ public class NoteAddOrReviseActivity extends BackActivity {
 		if(mNote == null) {
 			mNote = new Note();
 			mNote.setGUID(DBHelper.GUID());
+		} else {
+			//深度复制
+			mPreNote = IoUtils.copyObject(mNote);
 		}
+		//初始化图片基本路径
+		basePath = DiskCacheManager.getInstance().getPictureCachePath(getApplicationContext(), mNote.getGUID());
 		//初始化编辑框内容
 		initEditTextContent();
 	}
@@ -139,6 +152,8 @@ public class NoteAddOrReviseActivity extends BackActivity {
 		note_add_bottom_tools = (RelativeLayout) findViewById(R.id.note_add_bottom_tools);
 		note_add_bottom_content = (LayerFrameLayout) findViewById(R.id.note_add_bottom_content);
 		
+		note_add_title.clearFocus();
+		note_add_et.clearFocus();
 		note_add_et.setFont(mFont);
 		
 		initPicturesLayoutView();
@@ -294,12 +309,16 @@ public class NoteAddOrReviseActivity extends BackActivity {
 			if(selectedUrlList != null && selectedUrlList.size() > 0) {
 				for(String srcPath : selectedUrlList) {
 					//为每一张图片生成随机字符串作为图片名
-					String filename = RandomUtils.generateDigits();
+					String source = RandomUtils.generateDigits();
 					//记录
-					mfileUrlMap.put(filename, srcPath);
+					mfileUrlMap.put(source, srcPath);
 					//显示
+					DefaultImageSpanHandler imageSpanHandler = new DefaultImageSpanHandler(getApplicationContext(), basePath);
+					ImageSpan span = imageSpanHandler.generatePictureImageSpan(srcPath, source);
 					String displayText = getResources().getString(R.string.default_note_picture_display_text);
-					note_add_et.insertPicture(srcPath, displayText, filename);
+					SpannableString ss = new SpannableString(displayText);
+					ss.setSpan(span, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					note_add_et.getText().insert(note_add_et.getSelectionStart(), ss);
 				}
 			}
 		}
@@ -375,6 +394,7 @@ public class NoteAddOrReviseActivity extends BackActivity {
 					map.put(source, srcPath);
 				}
 			}
+			
 			//复制文件
 			String path = DiskCacheManager.getInstance().getPictureCachePath(getApplicationContext(), mNote.getGUID());
 			loader.createOrUpdateFile(getApplicationContext(), path, map);
@@ -386,9 +406,8 @@ public class NoteAddOrReviseActivity extends BackActivity {
 	
 	//保存成功后进行一些后续操作
 	private void saveSuccessAfter() {
-		Intent data = new Intent();
-		data.putExtra("note", mNote);
-		setResult(ActivityRequestResultCode.NOTE_LIST_TO_ADDORREVISE_ACTIVITY_RESULT_CODE, data);
+		//发送信息被修改消息
+		EventBus.getDefault().post(new NoteEntry(mPreNote, mNote));
 		finish();
 	}
 	
@@ -400,34 +419,22 @@ public class NoteAddOrReviseActivity extends BackActivity {
 			note_add_title.setSelection(note_add_title.length());
 			note_add_title.setModified(false);
 		}
-		CharacterStyleParser parser = new CharacterStyleParser();
-		List<CharacterStyleParser.CharacterStyleEntry> characterStyleList = parser.toCharacterStyle(mNote.getCharacterStyleContent());
-		String content = mNote.getContent();
-		if(!TextUtils.isEmpty(content)) {
-			SpannableString ss = new SpannableString(content);
-			if(characterStyleList != null) {
-				for(CharacterStyleParser.CharacterStyleEntry entry : characterStyleList) {
-					CharacterStyle span = entry.getCharacterStyle();
-					//ImageSpan特殊处理
-					if(CharacterStyleParser.SpanType.ImageSpan.equals(entry.getCharacterStyleType())) {
-						String source = ((ImageSpan)entry.getCharacterStyle()).getSource();
-						//可能是表情
-						span = note_add_et.generateEmojiImageSpan(source);
-						//可能是图片
-						String path = DiskCacheManager.getInstance().getPictureCachePath(getApplicationContext(), mNote.getGUID());
-						if(span == null) {
-							span = note_add_et.generatePictureImageSpan(path + source, source, DisplayUtils.getScreenWidthPixels(this));
-						}
-					}
-					ss.setSpan(span, entry.getStart(), entry.getEnd(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-				}
-			}
-			note_add_et.requestAllowStyleable(false);
-			note_add_et.setText(ss);
-			note_add_et.setSelection(ss.length());
-			note_add_et.requestAllowStyleable(true);
-			note_add_et.setModified(false);
+		//有内容
+		SpannedLoader spannedLoader = new SpannedLoader();
+		DefaultImageSpanHandler imageSpanHandler = new DefaultImageSpanHandler(getApplicationContext(), basePath);
+		Spanned span = spannedLoader.loadSpanned(mNote.getContent(), mNote.getCharacterStyleContent(), imageSpanHandler);
+		//添加所有图片路径到map中
+		Map<String, String> pathMap = imageSpanHandler.getPicturesPathList();
+		if(pathMap != null) {
+			mfileUrlMap.putAll(pathMap);
 		}
+
+		note_add_et.requestAllowStyleable(false);
+		note_add_et.setText(span);
+		note_add_et.setSelection(note_add_et.length());
+		note_add_et.requestAllowStyleable(true);
+		note_add_et.setModified(false);
+	
 	}
 	
 	@Override

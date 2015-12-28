@@ -8,6 +8,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.text.TextUtils;
+import android.widget.ImageView;
+
 /**
  * 图片加载器
  * 
@@ -46,5 +51,18 @@ public class ImageLoader {
 	
 	public void submit(Runnable task) {
 		sThreadPool.submit(task);
+	}
+	
+	public void displayImage(ImageView imageView, String url) {
+		if(imageView == null || TextUtils.isEmpty(url)) {
+			return;
+		}
+		Bitmap bm = BitmapFactory.decodeFile(url);
+		imageView.setImageBitmap(bm);
+	}
+	
+	private class ImageLoaderTask extends Thread {
+		
+		
 	}
 }

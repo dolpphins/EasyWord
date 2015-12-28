@@ -58,6 +58,18 @@
             android:name="com.mao.ui.RegisterActivity">
             
         </activity>
+        <!-- 查看图片 -->
+        <activity 
+            android:name="com.mao.ui.DisplayPicturesActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
+        <!-- 查看笔记Activity -->
+        <activity 
+            android:name="com.mao.ui.NoteViewActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
         
         <service 
             android:name="com.mao.service.NoteListIntentService">

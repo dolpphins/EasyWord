@@ -3,34 +3,22 @@ package com.mao.widget;
 import java.util.Set;
 
 import com.mao.bean.Font;
-import com.mao.conf.EmotionConfiguration;
 import com.mao.interf.Modifiable;
 import com.mao.manager.FontManager;
 import com.mao.screen.DisplayUtils;
-import com.mao.utils.ImageUtils;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.text.Editable;
-import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
 import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.EditText;
 
 public class WordEditText extends EditText implements Modifiable{
@@ -46,6 +34,9 @@ public class WordEditText extends EditText implements Modifiable{
 	
 	/** 标记是否允许样式化显示,默认为允许 */
 	private boolean mAllowStyleable = true;
+	
+	//图片显示时的缩放因子
+	private float mFactor = (float) (1.0f / 3.0f);
 	
 	public WordEditText(Context context) {
 		this(context, null);
@@ -158,73 +149,11 @@ public class WordEditText extends EditText implements Modifiable{
 	}
 	
 	/**
-	 * 通过url得到ImageSpan对象,注意如果此时通过getWidth获取编辑框宽度不为0时
-	 * totalWidth将会被getWidth取代
+	 * 获取图片显示时的缩放因子
 	 * 
-	 * @param srcPath
-	 * @param imageSpanUrl 
-	 * @param totalWidth 编辑框宽度,用于计算缩放因子
-	 * @return
+	 * @return 返回图片显示时的缩放因子
 	 */
-	public ImageSpan generatePictureImageSpan(String srcPath, String imageSpanUrl, int totalWidth) {
-		if(!TextUtils.isEmpty(srcPath)) {
-			Bitmap bm = BitmapFactory.decodeFile(srcPath);
-			if(bm != null) {
-				if(getWidth() > 0) {
-					totalWidth = getWidth();
-				}
-				float factor = computeBitmapScaledFactor(bm.getWidth(), bm.getHeight(), totalWidth);
-				Bitmap scaledBitmap = ImageUtils.createScaledBitmap(bm, factor);
-				bm.recycle();
-				Drawable drawable = new BitmapDrawable(getResources(), scaledBitmap);
-				drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-				ImageSpan span = new ImageSpan(drawable, imageSpanUrl, ImageSpan.ALIGN_BOTTOM);
-				return span;
-			}
-		}
-		return null;
-	}
-	
-	/**
-	 * 插入图片
-	 * 
-	 * @param srcPath
-	 * @param dstPath
-	 * @param imageSpanUrl
-	 */
-	public void insertPicture(String srcPath, String displayText, String imageSpanSource) {
-		ImageSpan span = generatePictureImageSpan(srcPath, imageSpanSource, getWidth());
-		SpannableString ss = new SpannableString(displayText);
-		ss.setSpan(span, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		getText().insert(getSelectionStart(), ss);
-	}
-	
-	//计算位图显示缩放因子
-	private float computeBitmapScaledFactor(int width, int heigth, int totalWidth) {
-		if(width <= 0 || heigth <=0 || totalWidth <= 0) {
-			return 0.0f;
-		}
-		if(3 * width < totalWidth) {
-			return (float) ((1.0 * totalWidth) / (3.0 * width)); 
-		} else if(3 * width > 2 * totalWidth) {
-			return (float) ((2.0 * totalWidth) / (3.0 * width)); 
-		} else {
-			return 1.0f;
-		}
-	}
-	
-	/**
-	 * 通过表情字符串获取表情ImageSpan
-	 * 
-	 * @param emojiString 表情字符串
-	 * @return 字符串对应的表情存在返回ImageSpan对象,不存在返回null.
-	 */
-	public ImageSpan generateEmojiImageSpan(String emojiString) {
-		Drawable drawable = EmotionConfiguration.getEmojiDrawableFromString(getContext(), emojiString);
-		if(drawable != null) {
-			drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-			return new ImageSpan(drawable, emojiString);
-		}
-		return null;
+	public float getBitmapScaledFactor() {
+		return mFactor;
 	}
 }

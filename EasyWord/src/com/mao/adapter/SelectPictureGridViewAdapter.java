@@ -1,5 +1,6 @@
 package com.mao.adapter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -9,12 +10,15 @@ import com.mao.cache.MemoryPicturesCacheManager;
 import com.mao.conf.ActivityRequestResultCode;
 import com.mao.conf.AppConfig;
 import com.mao.easyword.R;
+import com.mao.screen.DisplayUtils;
+import com.mao.ui.DisplayPicturesActivity;
 import com.mao.ui.PicturesHelper;
 import com.mao.utils.ImageUtils;
 import com.mao.utils.TextUtils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -99,7 +103,8 @@ public class SelectPictureGridViewAdapter extends BaseAdapter {
 			ImageView select_pictures_gridview_item_sel = (ImageView) v.findViewById(R.id.select_pictures_gridview_item_sel);
 			ViewGroup.LayoutParams params = new AbsListView.LayoutParams(mSideLength, mSideLength);
 			v.setLayoutParams(params);
-			setClickEvent(select_pictures_gridview_item_sel, url);
+			setSelectClickEvent(select_pictures_gridview_item_sel, url);
+			setDisplayClickEvent(iv, url);
 //		//} else {
 //			//iv = (ImageView) convertView;
 //		//}
@@ -141,7 +146,7 @@ public class SelectPictureGridViewAdapter extends BaseAdapter {
 	}
 	
 	//右上角图标点击事件
-	private void setClickEvent(final ImageView iv, final String url) {
+	private void setSelectClickEvent(final ImageView iv, final String url) {
 		if(iv != null) {
 			iv.setOnClickListener(new OnClickListener() {
 				
@@ -156,6 +161,23 @@ public class SelectPictureGridViewAdapter extends BaseAdapter {
 							iv.setImageResource(R.drawable.ps);
 						}
 					}
+				}
+			});
+		}
+	}
+	
+	//点击图片查看大图
+	private void setDisplayClickEvent(ImageView iv, final String url) {
+		if(iv != null) {
+			iv.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					ArrayList<String> picturesUrlList = new ArrayList<String>();
+					picturesUrlList.add(url);
+					Intent intent = new Intent(mActivity, DisplayPicturesActivity.class);
+					intent.putExtra("picturesUrlList", picturesUrlList);
+					mActivity.startActivity(intent);
 				}
 			});
 		}

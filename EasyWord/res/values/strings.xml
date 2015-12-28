@@ -5,7 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
-    <string name="all_document">所有文档</string>
+    <string name="all_document">所有笔记</string>
     <string name="tools">工具</string>
     
     <string name="node_add_tools_font">字体</string>
@@ -55,5 +55,8 @@
     <string name="color_picker">拾色器</string>
     <string name="current_color">当前颜色</string>
     <string name="no_select_color">未选择颜色</string>
+    <!-- 查看笔记 -->
+    <string name="lookup_note">查看笔记</string>
+    <string name="revise">修改</string>
     
 </resources>
