@@ -17,6 +17,10 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <!-- 公共ActionBar ImageView样式 -->
+    <style name="app_common_actionbar_imageStyle">
+        <item name="android:clickable">true</item>
+    </style>
     <!-- 公共ActionBar Text样式 -->
     <style name="app_common_actionbar_textStyle">
         <item name="android:textSize">@dimen/app_common_actionbar_textSize</item>

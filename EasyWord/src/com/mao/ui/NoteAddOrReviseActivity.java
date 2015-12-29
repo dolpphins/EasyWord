@@ -17,10 +17,12 @@ import com.mao.eventbus.NoteEntry;
 import com.mao.interf.Togglable;
 import com.mao.loader.CharacterStyleParser;
 import com.mao.loader.DefaultImageSpanHandler;
+import com.mao.loader.ImageSpanGenerator;
 import com.mao.loader.NoteLoader;
 import com.mao.loader.SpannedLoader;
 import com.mao.manager.FontManager;
 import com.mao.manager.FontManager.TextStyle;
+import com.mao.screen.DisplayUtils;
 import com.mao.tools.widget.EmojiLayout;
 import com.mao.tools.widget.NavigationViewPagerLayout;
 import com.mao.tools.widget.ToolsFontLayout;
@@ -42,7 +44,6 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -314,6 +315,9 @@ public class NoteAddOrReviseActivity extends BackActivity {
 					mfileUrlMap.put(source, srcPath);
 					//显示
 					DefaultImageSpanHandler imageSpanHandler = new DefaultImageSpanHandler(getApplicationContext(), basePath);
+					imageSpanHandler.setOnImageMeasureListener(
+							ImageSpanGenerator.getDefaultImageMeasureListener(
+									DisplayUtils.getScreenWidthPixels(this)));
 					ImageSpan span = imageSpanHandler.generatePictureImageSpan(srcPath, source);
 					String displayText = getResources().getString(R.string.default_note_picture_display_text);
 					SpannableString ss = new SpannableString(displayText);
@@ -422,6 +426,9 @@ public class NoteAddOrReviseActivity extends BackActivity {
 		//有内容
 		SpannedLoader spannedLoader = new SpannedLoader();
 		DefaultImageSpanHandler imageSpanHandler = new DefaultImageSpanHandler(getApplicationContext(), basePath);
+		imageSpanHandler.setOnImageMeasureListener(
+				ImageSpanGenerator.getDefaultImageMeasureListener(
+						DisplayUtils.getScreenWidthPixels(this)));
 		Spanned span = spannedLoader.loadSpanned(mNote.getContent(), mNote.getCharacterStyleContent(), imageSpanHandler);
 		//添加所有图片路径到map中
 		Map<String, String> pathMap = imageSpanHandler.getPicturesPathList();

@@ -17,6 +17,8 @@ public class User extends BmobObject{
 	private String phone;
 	
 	private String password;
+	
+	private String hpUrl;
 
 	public int getId() {
 		return id;
@@ -49,7 +51,12 @@ public class User extends BmobObject{
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
-	
-	
+
+	public String getHpUrl() {
+		return hpUrl;
+	}
+
+	public void setHpUrl(String hpUrl) {
+		this.hpUrl = hpUrl;
+	}
 }

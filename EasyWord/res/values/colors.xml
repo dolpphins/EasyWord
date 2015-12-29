@@ -9,6 +9,7 @@
     <color name="gray">#cccccc</color>
     <color name="light_blue">#4285f4</color>
     <color name="deep_gray">#A9A9A9</color>
+    <color name="light_gray">#c4c4c4</color>
     
     <color name="app_main_color">#0ecb5c</color>
     
@@ -35,5 +36,7 @@
     <color name="note_list_item_time_textColor">#9cc35e</color>
     <!-- 添加笔记 -->
     <color name="note_add_bottom_backgroundColor">#f5f5f5</color>
+    <!-- 查看笔记 -->
+    <color name="note_view_title_textColor">#7f7f7f</color>
     
 </resources>

@@ -48,10 +48,10 @@ public class ImageSpanGenerator {
 	 * 
 	 * @return 成功返回一个ImageSpan对象,失败返回null.
 	 * 
-	 * @see ImageSpanGenerator#generate(Context, Drawable, String, float)
+	 * @see ImageSpanGenerator#generate(Context, Drawable, String, OnImageMeasureListener)
 	 */
 	public ImageSpan generate(Context context, Drawable drawable, String imageSpanSource) {
-		return generate(context, drawable, imageSpanSource, 1.0f);
+		return generate(context, drawable, imageSpanSource, null);
 	}
 	
 	/**
@@ -60,11 +60,11 @@ public class ImageSpanGenerator {
 	 * @param context 上下文
 	 * @param drawable ImageSpan中的drawable
 	 * @param imageSpanSource ImageSpan的mSource
-	 * @param factor 缩放因子
+	 * @param listener 缩放因子测量监听器,为null表示不缩放
 	 * 
 	 * @return 成功返回一个ImageSpan对象,失败返回null.
 	 */
-	public ImageSpan generate(Context context, Drawable drawable, String imageSpanSource, float factor) {
+	public ImageSpan generate(Context context, Drawable drawable, String imageSpanSource, OnImageMeasureListener listener) {
 		if(context != null) {
 			Bitmap bm = null;
 			if(drawable == null) {
@@ -73,7 +73,14 @@ public class ImageSpanGenerator {
 			if(drawable == null) {
 				return null;
 			}
-			//需要进行缩放
+			float factor = 1.0f;
+			if(listener != null) {
+				factor = listener.onFactorMeasure(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+			}
+			if(factor < 0.0f) {
+				factor = 1.0f;
+			}
+			//需要缩放
 			if(Math.abs(factor - 1.0f) > 1e-6) {
 				bm = ImageUtils.drawable2Bitmap(drawable);
 				Bitmap scaledBitmap = ImageUtils.createScaledBitmap(bm, factor);
@@ -85,6 +92,60 @@ public class ImageSpanGenerator {
 			return span;
 		} else {
 			return null;
+		}
+	}
+	
+	/**
+	 * Image测量接口
+	 * 
+	 * @author mao
+	 *
+	 */
+	public interface OnImageMeasureListener {
+		
+		/**
+		 * 通过宽高计算缩放因子,1.0f表示不进行缩放
+		 * 
+		 * @param width 宽
+		 * @param height 高
+		 * @return 返回缩放因子,注意所有小于0的都按1.0f对待
+		 */
+		float onFactorMeasure(int width, int height);
+	}
+	
+	/**
+	 * 获取默认的OnImageMeasureListener实现类对象,该实现类
+	 * 的onFactorMeasure方法将会按图片最终显示宽度为1/2*totalWidth
+	 * 计算缩放因子.
+	 * 
+	 * @param totalWidth 总宽度,必须大于0
+	 * 
+	 * @return 返回一个OnImageMeasureListener的默认实现类对象
+	 */
+	public static OnImageMeasureListener getDefaultImageMeasureListener(int totalWidth) {
+		return new OnDefaultImageMeasureListener(totalWidth);
+	}
+	
+	/**
+	 * 默认的OnImageMeasureListener实现类
+	 * 
+	 * @author mao
+	 *
+	 */
+	private static class OnDefaultImageMeasureListener implements ImageSpanGenerator.OnImageMeasureListener {
+		
+		private int totalWidth;
+		
+		public OnDefaultImageMeasureListener(int width) {
+			totalWidth = width;
+		}
+		
+		@Override
+		public float onFactorMeasure(int width, int height) {
+			if(totalWidth >= 0 && width > 0) {
+				return totalWidth / (2.0f * width);
+			}
+			return 1.0f;
 		}
 	}
 }

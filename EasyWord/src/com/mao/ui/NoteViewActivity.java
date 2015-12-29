@@ -6,7 +6,9 @@ import com.mao.conf.ActivityRequestResultCode;
 import com.mao.easyword.R;
 import com.mao.eventbus.NoteEntry;
 import com.mao.loader.DefaultImageSpanHandler;
+import com.mao.loader.ImageSpanGenerator;
 import com.mao.loader.SpannedLoader;
+import com.mao.screen.DisplayUtils;
 import com.mao.ui.base.BackActivity;
 
 import android.content.Intent;
@@ -89,7 +91,9 @@ public class NoteViewActivity extends BackActivity{
 			SpannedLoader spannedLoader = new SpannedLoader();
 			String basePath = DiskCacheManager.getInstance().getPictureCachePath(getApplicationContext(), mNote.getGUID());
 			DefaultImageSpanHandler imageSpanHandler = new DefaultImageSpanHandler(getApplicationContext(), basePath);
-			imageSpanHandler.setFactor(1.0f / 3);
+			imageSpanHandler.setOnImageMeasureListener(
+					ImageSpanGenerator.getDefaultImageMeasureListener(
+							DisplayUtils.getScreenWidthPixels(this)));
 			Spanned span = spannedLoader.loadSpanned(mNote.getContent(), mNote.getCharacterStyleContent(), imageSpanHandler);
 			note_view_content.setText(span);
 		}

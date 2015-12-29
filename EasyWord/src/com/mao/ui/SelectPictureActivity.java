@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import com.mao.adapter.SelectPictureGridViewAdapter;
 import com.mao.conf.ActivityRequestResultCode;
@@ -57,8 +59,8 @@ public class SelectPictureActivity extends BackActivity {
 		TextView okTv = setActionBarRightText(R.string.ok);
 		setOkClickEvent(okTv);
 		
-		//初始化数据,异步操作
-		new ReadPicturesAsyncTask().execute(new Void[]{});
+		//初始化数据,异步操作,并行执行
+		new ReadPicturesAsyncTask().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, new Void[]{});
 	}
 	
 	private void initPicturesGridView() {

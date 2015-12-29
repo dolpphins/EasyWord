@@ -41,8 +41,16 @@ public class CircleImageView extends ImageView {
 		if(mDrawable != null && mDrawable != mPreDrawable) {
 			mPreDrawable = mDrawable;
 			mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+			Bitmap temp = mBitmap;
 			mBitmap = ImageUtils.createCircleBitmap(mBitmap);
+			if(temp != null && !temp.isRecycled()) {
+				temp.recycle();
+			}
+			temp = mBitmap;
 			mBitmap = Bitmap.createScaledBitmap(mBitmap, getWidth(), getHeight(), false);
+			if(temp != null && !temp.isRecycled()) {
+				temp.recycle();
+			}
 		}
 		if(mBitmap != null) {
 			rect.left = 0;
@@ -50,7 +58,6 @@ public class CircleImageView extends ImageView {
 			rect.right = getWidth();
 			rect.bottom = getHeight();
 			paint.reset();
-			
 			canvas.drawBitmap(mBitmap, null, rect, paint);
 		} else {
 			super.onDraw(canvas);

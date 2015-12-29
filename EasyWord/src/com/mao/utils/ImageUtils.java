@@ -4,7 +4,9 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
@@ -18,38 +20,34 @@ public class ImageUtils {
 	/**
 	 * 创建圆形位图
 	 * 
-	 * @param bm 
+	 * @param bitmap 
 	 * @return
 	 */
-	public static Bitmap createCircleBitmap(Bitmap bm) {
-		if(bm == null) {
+	public static Bitmap createCircleBitmap(Bitmap bitmap) {
+		if(bitmap == null) {
 			return null;
 		}
 		
-		int bmWidth = bm.getWidth();
-		int bmHeight = bm.getHeight();
+		int bmWidth = bitmap.getWidth();
+		int bmHeight = bitmap.getHeight();
 		int side = bmWidth < bmHeight ? bmWidth : bmHeight;
 		int x = (bmWidth - side) / 2;
 		int y = (bmHeight - side) / 2;
-		
-		Bitmap newBm = Bitmap.createBitmap(bm, x, y, side, side);
+		Bitmap newBm = Bitmap.createBitmap(side, side, Bitmap.Config.ARGB_8888);
 		if(newBm != null) {
-			newBm = newBm.copy(Bitmap.Config.ARGB_8888, true);
-			if(newBm != null) {
-				Canvas canvas = new Canvas(newBm);
-				Rect rect = new Rect(0, 0, newBm.getWidth(), newBm.getHeight());
-				RectF rectF = new RectF(rect);
-				float radius = newBm.getWidth() / 2;
-				Paint paint = new Paint();
-				paint.setAlpha(0);
-				paint.setAntiAlias(true);
-				canvas.drawRoundRect(rectF, radius, radius, paint);
-				
-				paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-				canvas.drawBitmap(newBm, rect, rect, paint);
-				
-				return newBm;
-			}
+			Canvas canvas = new Canvas(newBm);
+		    Paint paint = new Paint();
+		    paint.setAntiAlias(true);
+		    paint.setFilterBitmap(true);
+		    paint.setDither(true);
+		   
+		    Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		    canvas.drawARGB(0, 0, 0, 0);
+		    canvas.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getHeight()/2, paint);
+		    paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+		    canvas.drawBitmap(bitmap, rect, rect, paint);
+		    
+		    return newBm;
 		}
 		return null;
 	}

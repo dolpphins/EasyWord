@@ -44,5 +44,7 @@
     <dimen name="note_list_item_time_textSize">12sp</dimen>
     <dimen name="note_list_item_content_marginTop">5dip</dimen>
     <dimen name="note_list_item_content_marginBottom">5dip</dimen>
+    <!-- 查看笔记 -->
+    <dimen name="note_view_title_textSize">18sp</dimen>
     
 </resources>
