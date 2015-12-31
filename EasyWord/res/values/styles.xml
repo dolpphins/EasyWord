@@ -60,6 +60,12 @@
     <style name="input_style">
         <item name="android:background">@drawable/app_common_et_bg</item>
         <item name="android:textSize">16sp</item>
+    </style>
+    <!-- 输入用户名EditText样式 -->
+    <style name="input_username_style" parent="@style/input_style">
+        <item name="android:hint">@string/username</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLength">10</item>
     </style>    
     <!-- 输入手机号EditText样式 -->
     <style name="input_phone_style" parent="@style/input_style">

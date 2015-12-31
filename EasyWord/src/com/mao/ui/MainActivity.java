@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.mao.adapter.NoteListViewAdapter;
+import com.mao.adapter.SlidingMenuAdapter;
 import com.mao.bean.Note;
+import com.mao.bean.User;
 import com.mao.conf.ActivityRequestResultCode;
 import com.mao.easyword.R;
 import com.mao.easyword.UserManager;
@@ -12,7 +14,6 @@ import com.mao.eventbus.NoteEntry;
 import com.mao.executor.ImageLoader;
 import com.mao.service.NoteListIntentService;
 import com.mao.ui.base.BaseActivity;
-import com.mao.widget.CircleImageView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +25,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import cn.bmob.v3.listener.FindStatisticsListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -48,6 +48,13 @@ public class MainActivity extends BaseActivity {
 	private ListView main_note_lv;
 	private BaseAdapter mNoteListViewAdapter;
 	private ImageView main_note_add;
+	
+	/**
+	 * 侧滑菜单
+	 */
+	private View slide_menu_personality;
+	private ListView slide_menu_lv;
+	private ImageView slide_menu_headpicture;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,19 +100,14 @@ public class MainActivity extends BaseActivity {
 		if(mNoteListViewAdapter != null) {
 			mNoteListViewAdapter.notifyDataSetChanged();
 		}
+		//侧滑菜单头像
+		String url = UserManager.getInstance().getCurrentUser().getHpUrl();
+		ImageLoader.getInstance().displayImage(slide_menu_headpicture, url);
 	}
 	
 	private void initActionBar() {
-		mActionBar = findViewById(R.id.action_bar);
-		//所有文档
-		TextView centerText = (TextView) mActionBar.findViewById(R.id.app_common_actionbar_center_tv);
-		centerText.setText(R.string.all_document);
 		//头像
-		mHeadPictrueIv = (ImageView) mActionBar.findViewById(R.id.app_common_actionbar_left_iv);
-		//异步加载头像
-		//String url = UserManager.getInstance().getCurrentUser().getHpUrl();
-		//ImageLoader.getInstance().displayImage(headPicture, url);
-		mHeadPictrueIv.setImageResource(R.drawable.user_default_head);
+		mHeadPictrueIv = (ImageView) findViewById(R.id.app_common_actionbar_left_iv);
 	}
 	
 	private void initView() {
@@ -118,6 +120,22 @@ public class MainActivity extends BaseActivity {
 		mNoteList = new ArrayList<Note>();
 		mNoteListViewAdapter = new NoteListViewAdapter(getApplicationContext(), mNoteList);
 		main_note_lv.setAdapter(mNoteListViewAdapter);
+		
+		initSlidingMenu();
+	}
+	
+	private void initSlidingMenu() {
+		slide_menu_personality = findViewById(R.id.slide_menu_personality);
+		
+		slide_menu_headpicture = (ImageView) findViewById(R.id.slide_menu_headpicture);
+		TextView slide_menu_username = (TextView) findViewById(R.id.slide_menu_username);
+		
+		slide_menu_headpicture.setImageResource(R.drawable.avatar_default);
+		User user = UserManager.getInstance().getCurrentUser();
+		slide_menu_username.setText(user.getUsername());
+		
+		slide_menu_lv = (ListView) findViewById(R.id.slide_menu_lv);
+		slide_menu_lv.setAdapter(new SlidingMenuAdapter(getApplicationContext()));
 	}
 	
 	private void setEventForView() {
@@ -147,6 +165,35 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onClick(View v) {
 				toggleDrawer(Gravity.START);
+			}
+		});
+		//侧滑菜单顶部
+		slide_menu_personality.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this, PersonalityActivity.class);
+				startActivity(intent);
+				mDrawer.closeDrawer(Gravity.START);
+			}
+		});
+		//侧滑菜单Item点击事件
+		slide_menu_lv.setOnItemClickListener(new OnItemClickListener() {
+
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				switch (position) {
+				case 0:
+					mDrawer.closeDrawer(Gravity.START);
+					break;
+				case 1:
+					Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+					startActivity(intent);
+					mDrawer.closeDrawer(Gravity.START);
+					break;
+				default:
+					break;
+				}
 			}
 		});
 	}

@@ -60,13 +60,13 @@ public class PicturesHelper {
 	/**
 	 * 调用系统裁切功能
 	 * 
-	 * @param fragment 当前的Fragment对象,不能为null
+	 * @param activity 
 	 * @param uri 文件Uri对象, 不能为null
 	 * @param requestCode 请求码
 	 * */
-	public static void crop(Fragment fragment,Uri uri,int requestCode) {
+	public static void crop(Activity activity,Uri uri,int requestCode) {
 		
-		if(fragment == null || uri == null) {
+		if(activity == null || uri == null) {
 			return;
 		}
 		
@@ -83,26 +83,26 @@ public class PicturesHelper {
 		intent.putExtra("outputFormat", "JPEG");
 		intent.putExtra("noFaceDetection", true);
 		intent.putExtra("return-data", true);
-		fragment.startActivityForResult(intent, requestCode);
+		activity.startActivityForResult(intent, requestCode);
 	}
 	
 	/**
 	 * 调用相册选择图片
 	 * 
-	 * @param fragment 当前的Fragment对象
+	 * @param activity
 	 * @param filePath 文件夹路径,为null表示不保存
 	 * @param fileName 文件名
 	 * @param requestCode 请求码
 	 * */
-	public static void takePhotoByGallery(Fragment fragment,String filePath,String fileName,int requestCode)
+	public static void takePhotoByGallery(Activity activity,String filePath,String fileName,int requestCode)
 	{
-		if(fragment == null) {
+		if(activity == null) {
 			return;
 		}
 		try {
 			Intent intent = new Intent(Intent.ACTION_PICK);
 			intent.setType("image/*");
-			fragment.startActivityForResult(intent, requestCode);
+			activity.startActivityForResult(intent, requestCode);
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

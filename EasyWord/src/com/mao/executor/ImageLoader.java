@@ -1,5 +1,8 @@
 package com.mao.executor;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -8,8 +11,14 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.mao.utils.IoUtils;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
@@ -53,16 +62,50 @@ public class ImageLoader {
 		sThreadPool.submit(task);
 	}
 	
+	//暂时不使用线程池
 	public void displayImage(ImageView imageView, String url) {
 		if(imageView == null || TextUtils.isEmpty(url)) {
 			return;
 		}
-		Bitmap bm = BitmapFactory.decodeFile(url);
-		imageView.setImageBitmap(bm);
+		new ImageLoaderTask(imageView, url).execute(new Void[]{});
 	}
 	
-	private class ImageLoaderTask extends Thread {
+	private static class ImageLoaderTask extends AsyncTask<Void, Void, Bitmap> {
 		
+		private ImageView imageView;
+		private String networkUrl;
 		
+		public ImageLoaderTask(ImageView imageView, String networkUrl) {
+			this.imageView = imageView;
+			this.networkUrl = networkUrl;
+		}
+		
+		@Override
+		protected void onPreExecute() {
+		}
+		
+		@Override
+		protected Bitmap doInBackground(Void... params) {
+			HttpURLConnection con = null;
+			InputStream is = null;
+			try {
+				URL url = new URL(networkUrl);
+				con = (HttpURLConnection) url.openConnection();
+				is = con.getInputStream();
+				return BitmapFactory.decodeStream(is);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			} finally {
+				IoUtils.closeInputStream(is);
+			}
+		}
+		
+		@Override
+		protected void onPostExecute(Bitmap result) {
+			if(imageView != null && result != null) {
+				imageView.setImageBitmap(result);
+			}
+		}
 	}
 }

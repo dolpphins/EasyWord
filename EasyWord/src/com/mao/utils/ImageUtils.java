@@ -1,19 +1,21 @@
 package com.mao.utils;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.text.TextUtils;
 
 public class ImageUtils {
 
@@ -41,9 +43,9 @@ public class ImageUtils {
 		    paint.setFilterBitmap(true);
 		    paint.setDither(true);
 		   
-		    Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		    Rect rect = new Rect(0, 0, newBm.getWidth(), newBm.getHeight());
 		    canvas.drawARGB(0, 0, 0, 0);
-		    canvas.drawCircle(bitmap.getWidth()/2, bitmap.getHeight()/2, bitmap.getHeight()/2, paint);
+		    canvas.drawCircle(newBm.getWidth()/2, newBm.getHeight()/2, newBm.getHeight()/2, paint);
 		    paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
 		    canvas.drawBitmap(bitmap, rect, rect, paint);
 		    
@@ -131,5 +133,41 @@ public class ImageUtils {
     	d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
     	d.draw(canvas);
     	return bm;
+    }
+    
+    /**
+     * 保存位图到指定路径下
+     * 
+     * @param bm 要保存的位图
+     * @param quality 要保持的位图质量,范围:0-100
+     * @param path 要保存的路径,包括文件名
+     * @return 保存成功返回true,失败返回false.
+     */
+    public static boolean saveBitmap(Bitmap bm, int quality, String path) {
+    	if(bm == null || quality < 0 || quality > 100 || TextUtils.isEmpty(path)) {
+    		return false;
+    	}
+    	File f = new File(path);
+    	if(!f.exists()) {
+    		try {
+    			if(!f.createNewFile()) {
+    				return false;
+    			}
+    		} catch(Exception e) {
+    			e.printStackTrace();
+    			return false;
+    		}
+    	}
+    	OutputStream os = null;
+    	try {
+    		os = new FileOutputStream(f);
+    		return bm.compress(CompressFormat.JPEG, quality, os);
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return false;
+    	} finally {
+    		IoUtils.closeOutputStream(os);
+    	}
+    	
     }
 }

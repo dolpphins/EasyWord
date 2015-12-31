@@ -1,5 +1,9 @@
 package com.mao.ui;
 
+import java.util.List;
+
+import org.w3c.dom.Text;
+
 import com.mao.bean.User;
 import com.mao.conf.SpConfig;
 import com.mao.easyword.R;
@@ -21,6 +25,7 @@ import cn.bmob.v3.BmobQuery;
 import cn.bmob.v3.BmobSMS;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.CountListener;
+import cn.bmob.v3.listener.FindListener;
 import cn.bmob.v3.listener.RequestSMSCodeListener;
 import cn.bmob.v3.listener.SaveListener;
 import cn.bmob.v3.listener.VerifySMSCodeListener;
@@ -33,6 +38,7 @@ import cn.bmob.v3.listener.VerifySMSCodeListener;
  */
 public class RegisterActivity extends BackActivity {
 
+	private EditText app_register_username_et;
 	private EditText app_register_phone_et;
 	private EditText app_register_password_et;
 	private EditText app_register_validatecode_et;
@@ -61,6 +67,7 @@ public class RegisterActivity extends BackActivity {
 	}
 	
 	private void initView() {
+		app_register_username_et = (EditText) findViewById(R.id.app_register_username_et);
 		app_register_phone_et = (EditText) findViewById(R.id.app_register_phone_et);
 		app_register_password_et = (EditText) findViewById(R.id.app_register_password_et);
 		app_register_validatecode_et = (EditText) findViewById(R.id.app_register_validatecode_et);
@@ -97,18 +104,21 @@ public class RegisterActivity extends BackActivity {
 	}
 	
 	private void register() {
+		String username = app_register_username_et.getText().toString().trim();
 		String phone = app_register_phone_et.getText().toString().trim();
 		String password = app_register_password_et.getText().toString().trim();
 		String validateCode = app_register_validatecode_et.getText().toString().trim();
 		
-		if(TextUtils.isEmpty(phone)) {
+		if(TextUtils.isEmpty(username)) {
+			setRegisterError(R.string.input_username_tip);
+		} else if(TextUtils.isEmpty(phone)) {
 			setRegisterError(R.string.input_phone_tip);
 		} else if(TextUtils.isEmpty(password)) {
 			setRegisterError(R.string.input_password_tip);
 		} else if(TextUtils.isEmpty(validateCode)) {
 			setRegisterError(R.string.input_validatecode_tip);
 		} else {
-			startRegister(phone, password, validateCode);
+			startRegister(username, phone, password, validateCode);
 		}
 	}
 	
@@ -162,14 +172,21 @@ public class RegisterActivity extends BackActivity {
 	}
 	
 	//开始注册
-	private void startRegister(final String phone, final String password, String validateCode) {
+	private void startRegister(final String username, final String phone, final String password, String validateCode) {
+		
+		//测试阶段不用验证码
+		if(true) {
+			registerNewUser(username, phone, password);
+			return;
+		}
+		
 		//先验证验证码是否正确
 		BmobSMS.verifySmsCode(getApplicationContext(), phone, validateCode, new VerifySMSCodeListener() {
 			
 			@Override
 			public void done(BmobException e) {
 				if(e == null) {
-					registerNewUser(phone, password);
+					registerNewUser(username, phone, password);
 				} else {
 					setRegisterError(R.string.validate_code_error);
 				}
@@ -178,36 +195,51 @@ public class RegisterActivity extends BackActivity {
 	}
 	
 	//注册新用户
-	private void registerNewUser(final String phone, final String password) {
-		//判断该手机号码是否已注册
+	private void registerNewUser(final String username, final String phone, final String password) {
+		//判断该用户名是否已注册
 		BmobQuery<User> query = new BmobQuery<User>();
-		query.addWhereEqualTo("phone", phone);
+		query.addWhereEqualTo("username", username);
 		query.count(getApplicationContext(), User.class, new CountListener() {
 			
 			@Override
 			public void onFailure(int arg0, String arg1) {
-				//失败
 				setRegisterError(R.string.register_fail);
 			}
 			
 			@Override
 			public void onSuccess(int count) {
-				//成功
 				if(count <= 0) {
-					realRegister(phone, password);
+					BmobQuery<User> query = new BmobQuery<User>();
+					query.addWhereEqualTo("phone", phone);
+					query.count(getApplicationContext(), User.class, new CountListener() {
+						
+						@Override
+						public void onFailure(int arg0, String arg1) {
+							setRegisterError(R.string.register_fail);
+						}
+						
+						@Override
+						public void onSuccess(int count) {
+							if(count <= 0) {
+								realRegister(username, phone, password);
+							} else {
+								setRegisterError(R.string.phone_alread_register);
+							}
+						}
+					});
 				} else {
-					setRegisterError(R.string.phone_alread_register);	
+					setRegisterError(R.string.username_alread_register);
 				}
 			}
 		});
 	}
 	
 	//真正进行主注册
-	private void realRegister(String phone, String password) {
+	private void realRegister(String username, String phone, String password) {
 		final User user = new User();
 		user.setPhone(phone);
 		user.setPassword(EncryptHelper.md5(password));
-		user.setUsername(phone);//默认以手机号码为用户名
+		user.setUsername(username);//默认以手机号码为用户名
 		user.save(getApplicationContext(), new SaveListener() {
 			
 			@Override

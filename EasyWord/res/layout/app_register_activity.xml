@@ -17,6 +17,25 @@
 	    android:background="@drawable/app_common_widget_bg"
 	    android:layout_marginTop="10dip">
 	   
+        <!-- 用户名 -->
+	    <LinearLayout 
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:paddingLeft="10dip"
+	        android:padding="5dip"
+	        android:paddingBottom="5dip">
+	        <EditText 
+	            android:id="@+id/app_register_username_et"
+	        	android:layout_width="0dip"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1000"
+	        	style="@style/input_username_style"/>
+	    </LinearLayout>
+	    
+	    <!-- 分割线 -->
+	    <include layout="@layout/app_separator"/>
+        
 	    <!-- 手机号 -->
 	    <LinearLayout 
 	        android:layout_width="match_parent"

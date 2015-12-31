@@ -19,6 +19,10 @@ public class User extends BmobObject{
 	private String password;
 	
 	private String hpUrl;
+	
+	private String signature;
+	
+	private String sex;
 
 	public int getId() {
 		return id;
@@ -59,4 +63,22 @@ public class User extends BmobObject{
 	public void setHpUrl(String hpUrl) {
 		this.hpUrl = hpUrl;
 	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	
+	
 }

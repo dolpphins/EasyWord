@@ -43,14 +43,14 @@ public class CircleImageView extends ImageView {
 			mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
 			Bitmap temp = mBitmap;
 			mBitmap = ImageUtils.createCircleBitmap(mBitmap);
-			if(temp != null && !temp.isRecycled()) {
-				temp.recycle();
-			}
-			temp = mBitmap;
+//			if(temp != null && !temp.isRecycled()) {
+//				temp.recycle();
+//			}
+			//temp = mBitmap;
 			mBitmap = Bitmap.createScaledBitmap(mBitmap, getWidth(), getHeight(), false);
-			if(temp != null && !temp.isRecycled()) {
-				temp.recycle();
-			}
+//			if(temp != null && !temp.isRecycled()) {
+//				temp.recycle();
+//			}
 		}
 		if(mBitmap != null) {
 			rect.left = 0;

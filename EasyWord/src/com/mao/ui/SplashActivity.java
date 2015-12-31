@@ -35,8 +35,10 @@ public class SplashActivity extends BaseActivity {
 		SharePreferencesManager spm = SharePreferencesManager.getInstance();
 		String username = spm.getLoginMessageString(getApplicationContext(), SpConfig.USERNAME_KEY, null);
 		String password = spm.getLoginMessageString(getApplicationContext(), SpConfig.PASSWORD_KEY, null);
+		User user = new User();
+		user.setUsername(username);
 		//登录
-		Loginer.getInstance().login(getApplicationContext(), username, password, new LoginListener() {
+		Loginer.getInstance().login(getApplicationContext(), user, password, new LoginListener() {
 			
 			@Override
 			public void onSuccess(User user) {

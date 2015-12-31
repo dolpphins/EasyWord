@@ -12,23 +12,12 @@
     android:background="@color/app_common_actionbar_backgroundColor"
     android:padding="@dimen/app_common_actionbar_padding">
     
-    <!-- 左边ImageView -->
-    <ImageView
-	    android:id="@+id/app_common_actionbar_left_iv" 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_centerVertical="true"
-	    android:layout_alignParentLeft="true"
-	    android:layout_alignParentStart="true"
-	    style="@style/app_common_actionbar_imageStyle"/>
     <!-- 左边TextView -->
 	<TextView
 	    android:id="@+id/app_common_actionbar_left_tv" 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@id/app_common_actionbar_left_iv"
-	    android:layout_toStartOf="@id/app_common_actionbar_left_iv"
 	    style="@style/app_common_actionbar_textStyle"/>
 	
 	<!-- 中间TextView -->

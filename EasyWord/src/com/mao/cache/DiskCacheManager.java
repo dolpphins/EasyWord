@@ -54,4 +54,17 @@ public class DiskCacheManager {
 		sb.append("/");
 		return sb.toString();
 	}
+	
+	/**
+	 * 获取应用主要的存储目录
+	 * 
+	 * @return 返回应用主要的存储目录
+	 */
+	public String getMainDirectory() {
+		if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+			return Environment.getExternalStorageDirectory().getPath() + "/EasyWord/";
+		} else {
+			return "";
+		}
+	}
 }

@@ -45,16 +45,24 @@ public class Loginer {
 	/**
 	 * 
 	 * @param context
-	 * @param phone
+	 * @param user
 	 * @param password
 	 * @param listener
 	 * 
 	 */
-	public void login(Context context, String phone, String password, final LoginListener listener) {
+	public void login(Context context, User user, String password, final LoginListener listener) {
 		if(!mIsLogging) {
-			if(context != null && !TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password)) {
+			if(context != null && user != null && !TextUtils.isEmpty(password)) {
 				BmobQuery<User> query = new BmobQuery<User>();
-				query.addWhereEqualTo("phone", phone);
+				if(!TextUtils.isEmpty(user.getUsername())) {
+					query.addWhereEqualTo("username", user.getUsername());	
+				} else if(!TextUtils.isEmpty(user.getPhone())) {
+					query.addWhereEqualTo("phone", user.getPhone());
+				} else {
+					if(listener != null) {
+						listener.onFail("illegal arguments,username and phone can't be null on the same time");
+					}
+				}
 				query.addWhereEqualTo("password", password);
 				mIsLogging = true;
 				query.findObjects(context, new FindListener<User>() {

@@ -26,6 +26,11 @@ public class ActivityRequestResultCode {
 	/** 从笔记查看界面跳转到笔记修改界面请求码 */
 	public final static int NOTE_VIEW_TO_REVISE_ACTIVITY_REQUEST_CODE = 6;
 	
+	/** 打开系统相册请求码 */
+	public final static int GALLERY_ACTIVITY_REQUEST_CODE = 7;
+	
+	/** 裁剪图片请求码 */
+	public final static int CROP_ACTIVITY_REQUEST_CODE = 8;
 	
 	
 	/** SelectPictureActivity结果码 */

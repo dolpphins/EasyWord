@@ -27,7 +27,7 @@ import android.widget.TextView;
  */
 public class LoginActivity extends BaseActivity {
 
-	private EditText app_login_phone_et;
+	private EditText app_login_username_phone_et;
 	private EditText app_login_password_et;
 	private Button app_login_btn;
 	private TextView app_login_login_tip;
@@ -70,7 +70,7 @@ public class LoginActivity extends BaseActivity {
 	}
 	
 	private void initView() {
-		app_login_phone_et = (EditText) findViewById(R.id.app_login_phone_et);
+		app_login_username_phone_et = (EditText) findViewById(R.id.app_login_username_phone_et);
 		app_login_password_et = (EditText) findViewById(R.id.app_login_password_et);
 		app_login_btn = (Button) findViewById(R.id.app_login_btn);
 		app_login_login_tip = (TextView) findViewById(R.id.app_login_login_tip);
@@ -81,17 +81,23 @@ public class LoginActivity extends BaseActivity {
 			
 			@Override
 			public void onClick(View v) {
-				String phone = app_login_phone_et.getText().toString().trim();
+				String usernamePhone = app_login_username_phone_et.getText().toString().trim();
 				String password = app_login_password_et.getText().toString().trim();
-				if(!TextUtils.isEmpty(phone) && !TextUtils.isEmpty(password)) {
+				if(!TextUtils.isEmpty(usernamePhone) && !TextUtils.isEmpty(password)) {
 					password = EncryptHelper.md5(password);
 					if(!TextUtils.isEmpty(password)) {
-						//尝试登陆
-						Loginer.getInstance().login(getApplicationContext(), phone, password, new OnLoginListener());
+						User user = new User();
+						//先判断是用户名还是手机号
+						if(usernamePhone.length() > 10) {
+							user.setPhone(usernamePhone);
+						} else {
+							user.setUsername(usernamePhone);
+						}
+						Loginer.getInstance().login(getApplicationContext(), user, password, new OnLoginListener());
 					}
 				} else {
-					if(TextUtils.isEmpty(phone)) {
-						app_login_login_tip.setText(R.string.input_phone_tip);
+					if(TextUtils.isEmpty(usernamePhone)) {
+						app_login_login_tip.setText(R.string.input_username_phone_tip);
 					} else if(TextUtils.isEmpty(password)) {
 						app_login_login_tip.setText(R.string.input_password_tip);
 					}

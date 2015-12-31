@@ -70,6 +70,18 @@
             android:launchMode="singleTop">
             
         </activity>
+        <!-- 设置Activity -->
+        <activity 
+            android:name="com.mao.ui.SettingsActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
+        <!-- 个人信息Activity -->
+        <activity 
+            android:name="com.mao.ui.PersonalityActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
         
         <service 
             android:name="com.mao.service.NoteListIntentService">
