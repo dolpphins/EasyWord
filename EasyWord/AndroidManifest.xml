@@ -8,21 +8,86 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="19" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
+    
     <application
         android:name="com.mao.easyword.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <!-- 启动Activity -->
         <activity
-            android:name="com.mao.ui.MainActivity"
-            android:label="@string/app_name" >
+            android:name="com.mao.ui.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- 笔记列表Activity -->
+        <activity
+            android:name="com.mao.ui.MainActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+            
+        </activity>
+        <!-- 添加笔记Activity -->
+        <activity
+            android:name="com.mao.ui.NoteAddOrReviseActivity"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateAlwaysHidden|stateHidden">
+            
+        </activity>
+        <!-- 选择图片Activity -->
+        <activity 
+            android:name="com.mao.ui.SelectPictureActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
+        <!-- 登录Activity -->
+        <activity 
+            android:name="com.mao.ui.LoginActivity">
+            
+        </activity>
+		<!-- 注册Activity -->
+        <activity 
+            android:name="com.mao.ui.RegisterActivity">
+            
+        </activity>
+        <!-- 查看图片 -->
+        <activity 
+            android:name="com.mao.ui.DisplayPicturesActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
+        <!-- 查看笔记Activity -->
+        <activity 
+            android:name="com.mao.ui.NoteViewActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
+        <!-- 设置Activity -->
+        <activity 
+            android:name="com.mao.ui.SettingsActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
+        <!-- 个人信息Activity -->
+        <activity 
+            android:name="com.mao.ui.PersonalityActivity"
+            android:launchMode="singleTop">
+            
+        </activity>
+        
+        <service 
+            android:name="com.mao.service.NoteListIntentService">
+            
+        </service>
+        
     </application>
 
 </manifest>

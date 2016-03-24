@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 点击添加笔记底部工具按钮时弹出的布局进入动画 -->
+
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate
+        android:fromYDelta="100%"
+        android:toYDelta="0"
+        android:duration="500"/>
+</set>

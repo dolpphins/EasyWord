@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- 添加笔记底部点击工具弹出的布局 -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+    
+    <!-- 顶部分割线 -->
+    <include layout="@layout/app_common_horizontal_separator"/>
+
+    <!-- 导航条 -->
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/note_add_bottom_tools_navigation_paddingTop"
+        android:paddingRight="@dimen/note_add_bottom_tools_navigation_paddingRight"
+        android:paddingEnd="@dimen/note_add_bottom_tools_navigation_paddingRight"
+        android:paddingBottom="@dimen/note_add_bottom_tools_navigation_paddingBottom">
+        <HorizontalScrollView 
+            android:id="@+id/note_add_bottom_tools_navigation_scrollview"
+	        android:layout_width="0dip"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1000">
+	        <LinearLayout 
+	            android:id="@+id/note_add_bottom_tools_navigation"
+	        	android:layout_width="wrap_content"
+	        	android:layout_height="wrap_content"
+	        	android:orientation="horizontal">
+	    		<!-- 这里放所有导航文本 -->
+	    		
+	        </LinearLayout>
+    	</HorizontalScrollView>
+    	<!-- 隐藏该布局按钮 -->
+    	<!-- <RelativeLayout 
+    	    android:layout_width="wrap_content"
+    	    android:layout_height="wrap_content"
+    	    android:padding="@dimen/note_add_bottom_tools_navigation_arrowdown_padding">
+    	    <TextView 
+	    	    android:id="@+id/note_add_bottom_tools_navigation_arrowdown"
+	    	    android:layout_width="wrap_content"
+	    	    android:layout_height="wrap_content"
+	    	    android:clickable="true"
+	    	    android:background="@drawable/note_add_arrow_down"
+	    	    android:layout_centerInParent="true"/> 
+    	</RelativeLayout> -->
+    </LinearLayout>
+    
+    <!-- 导航提示图标 -->
+    <TextView 
+        android:id="@+id/note_add_bottom_tools_navigation_tip"
+        android:layout_width="wrap_content"
+		android:layout_height="2dip"
+		android:background="@color/note_add_bottom_tools_navigation_tipColor"/>
+	<!-- 分割线  -->
+    <include layout="@layout/app_common_horizontal_separator"/>
+    
+    <com.mao.widget.WrapContentViewPager
+        android:id="@+id/note_add_bottom_tools_vp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    
+</LinearLayout>
